@@ -3,7 +3,7 @@
  * Supports: URL/ID paste (no API key), full search (optional API key)
  */
 
-const YT_API_KEY = 'AIzaSyBHYWC93oQ5Rr3htFLH2XpfNTErQxyk1DQ';
+const YT_API_KEY = 'AIzaSyDUNxE9jqIFAIiHI-v-tXx42Q9ifJvycG8';
 
 /* ── YouTube IFrame API bootstrap ──────────────────────────────── */
 let ytPlayer = null;
