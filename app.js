@@ -710,11 +710,15 @@ audio.addEventListener('ended', () => {
 
 audio.addEventListener('error', () => {
     state._skipCount++;
-    showToast('Stream error, skipping to next track...');
-    if (state._skipCount > 10) {
+    if (state._skipCount > 3) {
         state._skipCount = 0;
-        showToast('Many streams unavailable. Try another genre.'); return;
+        state.isPlaying = false;
+        updatePlayPauseIcon();
+        audio.pause();
+        showToast('Streams blocked or unavailable. Please try another genre or switch to YouTube Mode.');
+        return;
     }
+    showToast('Stream error, skipping to next track...');
     if (state.filtered.length > 1) playNext();
 });
 

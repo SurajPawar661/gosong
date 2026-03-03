@@ -22,6 +22,7 @@ window.onYouTubeIframeAPIReady = function () {
     ytPlayer = new YT.Player('ytPlayerDiv', {
         height: '100%',
         width: '100%',
+        host: 'https://www.youtube.com',
         playerVars: { autoplay: 1, controls: 1, rel: 0, modestbranding: 1, iv_load_policy: 3, origin: window.location.origin },
         events: { onStateChange: onYTStateChange, onError: onYTError },
     });
@@ -82,17 +83,21 @@ function onYTStateChange(event) {
     if (event.data === S.PLAYING) {
         ytStartProgressPoll();
         // Update play/pause button to show PAUSE icon
+        state.isPlaying = true;
         const btn = document.getElementById('playPauseBtn');
         if (btn) btn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="4" x2="6" y2="20"/><line x1="18" y1="4" x2="18" y2="20"/></svg>`;
         if ('mediaSession' in navigator) navigator.mediaSession.playbackState = 'playing';
+        if (typeof mSyncPlayIcon === 'function') mSyncPlayIcon(true);
         ytUpdatePlayerBar();
     }
 
     if (event.data === S.PAUSED) {
         ytStopProgressPoll();
+        state.isPlaying = false;
         const btn = document.getElementById('playPauseBtn');
         if (btn) btn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>`;
         if ('mediaSession' in navigator) navigator.mediaSession.playbackState = 'paused';
+        if (typeof mSyncPlayIcon === 'function') mSyncPlayIcon(false);
     }
 
     if (event.data === S.ENDED) {
